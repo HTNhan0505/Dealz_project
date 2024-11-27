@@ -14,7 +14,6 @@ class HomeDeal1Screen extends StatefulWidget {
 }
 
 class _HomeDeal1ScreenState extends State<HomeDeal1Screen> {
-  void _incrementCounter() {}
 
   final nameController = TextEditingController();
   final jobController = TextEditingController();

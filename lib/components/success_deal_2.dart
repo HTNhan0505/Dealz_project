@@ -1,19 +1,21 @@
 import 'package:dealz_app/components/count_down_page.dart';
 import 'package:dealz_app/resources/colors/app_colors.dart';
+import 'package:dealz_app/views/d2_q2.dart';
+import 'package:dealz_app/views/home_dealz_level_1.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/routes/routes_names.dart';
 
-class SuccessDeal extends StatefulWidget {
-  const SuccessDeal({super.key, required this.titleSuccess});
+class SuccessDeal2 extends StatefulWidget {
+  const SuccessDeal2({super.key, required this.titleSuccess});
 
   final String titleSuccess;
 
   @override
-  State<SuccessDeal> createState() => _SuccessDealState();
+  State<SuccessDeal2> createState() => _SuccessDeal2State();
 }
 
-class _SuccessDealState extends State<SuccessDeal> {
+class _SuccessDeal2State extends State<SuccessDeal2> {
   bool isLoading = true;
 
   @override
@@ -24,14 +26,8 @@ class _SuccessDealState extends State<SuccessDeal> {
       Navigator.push(
           context,
           PageRouteBuilder(
-            pageBuilder: (_, __, ___) => CountDownPage(
-              autoCountDown: true,
-              nameQuest: '',
-              showNextBtn: false,
-              titleQuest: 'DEAL 1',
-              nameBtn: '',
-            ),
-            transitionDuration: const Duration(seconds: 2),
+            pageBuilder: (_, __, ___) => D2Q2Screen(),
+            transitionDuration: const Duration(seconds: 1),
             transitionsBuilder: (_, a, __, c) =>
                 FadeTransition(opacity: a, child: c),
           ));

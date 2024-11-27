@@ -1,40 +1,32 @@
 import 'package:dealz_app/components/count_down_page.dart';
 import 'package:dealz_app/resources/colors/app_colors.dart';
+import 'package:dealz_app/views/success_congratulate_dealz.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/routes/routes_names.dart';
 
-class SuccessDeal extends StatefulWidget {
-  const SuccessDeal({super.key, required this.titleSuccess});
+class SuccessAfterPhoto extends StatefulWidget {
+  SuccessAfterPhoto({super.key, required this.titleSuccess});
 
   final String titleSuccess;
 
   @override
-  State<SuccessDeal> createState() => _SuccessDealState();
+  State<SuccessAfterPhoto> createState() => _SuccessAfterPhotoState();
 }
 
-class _SuccessDealState extends State<SuccessDeal> {
+class _SuccessAfterPhotoState extends State<SuccessAfterPhoto> {
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-
     Future.delayed(const Duration(milliseconds: 3500), () {
       Navigator.push(
           context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => CountDownPage(
-              autoCountDown: true,
-              nameQuest: '',
-              showNextBtn: false,
-              titleQuest: 'DEAL 1',
-              nameBtn: '',
-            ),
-            transitionDuration: const Duration(seconds: 2),
-            transitionsBuilder: (_, a, __, c) =>
-                FadeTransition(opacity: a, child: c),
-          ));
+          MaterialPageRoute(
+              builder: (context) => SuccessCongratulateDealz(
+                  titleSuccess:
+                      'Chúc mừng bạn đã hoàn thành Quest 1. Level 2 đã được mở khóa')));
     });
 
     Future.delayed(const Duration(milliseconds: 1500), () {
@@ -75,10 +67,8 @@ class _SuccessDealState extends State<SuccessDeal> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    widget.titleSuccess.isNotEmpty
-                        ? widget.titleSuccess
-                        : 'CHỐT DEALZ',
-                    style: const TextStyle(
+                    widget.titleSuccess,
+                    style: TextStyle(
                         color: AppColors.blackColor,
                         fontSize: 20,
                         fontWeight: FontWeight.w600),

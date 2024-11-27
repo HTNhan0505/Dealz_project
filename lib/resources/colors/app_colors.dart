@@ -9,6 +9,7 @@ class AppColors {
 
   static const blackColor = Colors.black;
   static const whiteColor = Colors.white;
+  static var backgroundBankTextField = HexColor('#444444');
   static var borderDialog = HexColor('#D9D9D9');
   static var placeholderTextField = HexColor('#090F24');
 

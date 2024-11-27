@@ -1,16 +1,24 @@
+import 'dart:io';
 import 'dart:math';
+
+import 'package:dealz_app/components/count_down_success_q2.dart';
+import 'package:dealz_app/components/success_deal.dart';
 import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:dealz_app/utils/time_util.dart';
-import 'package:dealz_app/views/d1_q1_2.dart';
+import 'package:dealz_app/views/success_after_photo.dart';
+import 'package:dealz_app/views/success_after_photo_q2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../components/count_down_page.dart';
+import '../components/notification_global.dart';
 import '../provider/time_provider.dart';
+import '../utils/routes/routes_names.dart';
 
-import 'notification_global.dart';
-
-class CountDownPage extends StatefulWidget {
+class D2Q2Photo extends StatefulWidget {
   final bool autoCountDown;
   final bool showNextBtn;
   final String nameQuest;
@@ -18,22 +26,23 @@ class CountDownPage extends StatefulWidget {
   final String nameBtn;
   final VoidCallback? funcBtn;
 
-  CountDownPage(
+  const D2Q2Photo(
       {super.key,
-      required this.autoCountDown,
-      required this.nameQuest,
-      required this.showNextBtn,
-      required this.titleQuest,
-      required this.nameBtn,
-      this.funcBtn});
+        required this.autoCountDown,
+        required this.nameQuest,
+        required this.showNextBtn,
+        required this.titleQuest,
+        required this.nameBtn,
+        this.funcBtn});
 
   @override
-  State<CountDownPage> createState() => _CountDownPageState();
+  State<D2Q2Photo> createState() => _D2Q2PhotoState();
 }
 
-class _CountDownPageState extends State<CountDownPage> {
+class _D2Q2PhotoState extends State<D2Q2Photo> {
   bool isShowBtn = false;
   String? _statusMessage;
+  File? _image;
 
   void _scheduleNotification() async {
     try {
@@ -44,13 +53,13 @@ class _CountDownPageState extends State<CountDownPage> {
       await NotificationService().scheduleNotification(
         title: 'Dealz thông báo',
         body:
-            'Thông báo này xuất hiện ${scheduledTime.hour} : ${scheduledTime.minute}!',
+        'Thông báo này xuất hiện ${scheduledTime.hour} : ${scheduledTime.minute}!',
         scheduledTime: scheduledTime,
       );
 
       setState(() {
         _statusMessage =
-            'Đã lên lịch thông báo vào lúc ${scheduledTime.hour}:${scheduledTime.minute}!';
+        'Đã lên lịch thông báo vào lúc ${scheduledTime.hour}:${scheduledTime.minute}!';
       });
     } catch (e) {
       setState(() {
@@ -69,7 +78,7 @@ class _CountDownPageState extends State<CountDownPage> {
           child: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hms,
             initialTimerDuration:
-                Duration(seconds: timerProvider.remainingTime),
+            Duration(seconds: timerProvider.remainingTime),
             onTimerDurationChanged: (Duration newDuration) {
               if (newDuration.inSeconds > 0) {
                 timerProvider.setTime(newDuration.inSeconds);
@@ -87,26 +96,6 @@ class _CountDownPageState extends State<CountDownPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final timeProvider = Provider.of<TimeProvider>(context, listen: false);
-
-      timeProvider.onTimerFinish = () {
-        
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CountDownPage(
-              autoCountDown: true,
-              nameQuest:
-                  'Buớc 1, bạn đến hầm giữ xe của toà nhà TML (link maps). Hãy lấy một phong bì trên xe máy 50-T1.065.23, ô đậu xe E19. Bạn có thời gian 2 giờ để thực hiện Quest 1.',
-              showNextBtn: true,
-              titleQuest: 'QUEST 1',
-              nameBtn: 'Next',
-            ),
-          ),
-        );
-
-        timeProvider.setTime(2 * 3600);
-        timeProvider.startTimer();
-      };
 
       if (widget.autoCountDown) {
         timeProvider.startTimer();
@@ -192,88 +181,87 @@ class _CountDownPageState extends State<CountDownPage> {
               ),
             widget.showNextBtn
                 ? GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => Deal1Q1_2(
-                              autoCountDown: true,
-                              nameQuest:
-                                  'Buớc 2, mang phong bì đến hẻm 51 trên đường Hồng Bàng, Quận 5 (link maps) giao cho người tiếp nhận. Bạn có 30 phút để thực hiện Quest 1',
-                              showNextBtn: true,
-                              titleQuest: 'DEAL 1',
-                              nameBtn: 'HOÀN THÀNH',
-                            ),
-                          ));
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 30),
-                      decoration: BoxDecoration(
-                        color: Colors.black, // Màu nền của nút
-                        borderRadius: BorderRadius.circular(30), // Bo góc
-                      ),
-                      child: Center(
-                        child: Text(
-                          widget.nameBtn,
-                          style: const TextStyle(
-                            color: Colors.white, // Màu chữ
-                            fontSize: 16, // Kích thước chữ
-                            fontWeight: FontWeight.bold, // In đậm chữ
-                          ),
-                        ),
-                      ),
+              onTap: _pickImage,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 15, horizontal: 30),
+                decoration: BoxDecoration(
+                  color: Colors.black, // Màu nền của nút
+                  borderRadius: BorderRadius.circular(30), // Bo góc
+                ),
+                child: Center(
+                  child: Text(
+                    widget.nameBtn,
+                    style: const TextStyle(
+                      color: Colors.white, // Màu chữ
+                      fontSize: 16, // Kích thước chữ
+                      fontWeight: FontWeight.bold, // In đậm chữ
                     ),
-                  )
+                  ),
+                ),
+              ),
+            )
                 : const SizedBox(),
             isShowBtn
                 ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: timeProvider.isRunning
-                            ? timeProvider.pauseTimer
-                            : timeProvider.startTimer,
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.blackColor,
-                          ),
-                          child: Icon(
-                            timeProvider.isRunning
-                                ? Icons.pause
-                                : Icons.play_arrow,
-                            size: 40,
-                            color: AppColors.whiteColor,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      GestureDetector(
-                        onTap: _scheduleNotification,
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.blackColor,
-                          ),
-                          child: const Icon(
-                            Icons.stop,
-                            size: 35,
-                            color: AppColors.whiteColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: timeProvider.isRunning
+                      ? timeProvider.pauseTimer
+                      : timeProvider.startTimer,
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.blackColor,
+                    ),
+                    child: Icon(
+                      timeProvider.isRunning
+                          ? Icons.pause
+                          : Icons.play_arrow,
+                      size: 40,
+                      color: AppColors.whiteColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                GestureDetector(
+                  onTap: _scheduleNotification,
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.blackColor,
+                    ),
+                    child: const Icon(
+                      Icons.stop,
+                      size: 35,
+                      color: AppColors.whiteColor,
+                    ),
+                  ),
+                ),
+              ],
+            )
                 : const Row()
           ],
         ),
       ),
     );
+  }
+  Future<void> _pickImage() async {
+    final pickedFile =
+    await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+
+      Get.to(() => CountDownSuccessQ2(autoCountDown: true, nameQuest: '', showNextBtn: true, titleQuest: 'QUEST 2'));
+    }
   }
 }
 

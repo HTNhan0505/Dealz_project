@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:dealz_app/utils/time_util.dart';
 import 'package:dealz_app/views/d1_q1_2.dart';
+import 'package:dealz_app/views/d2_q2_photo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,7 @@ import '../provider/time_provider.dart';
 
 import 'notification_global.dart';
 
-class CountDownPage extends StatefulWidget {
+class CountDownD2Q2 extends StatefulWidget {
   final bool autoCountDown;
   final bool showNextBtn;
   final String nameQuest;
@@ -18,7 +19,7 @@ class CountDownPage extends StatefulWidget {
   final String nameBtn;
   final VoidCallback? funcBtn;
 
-  CountDownPage(
+  CountDownD2Q2(
       {super.key,
       required this.autoCountDown,
       required this.nameQuest,
@@ -28,10 +29,10 @@ class CountDownPage extends StatefulWidget {
       this.funcBtn});
 
   @override
-  State<CountDownPage> createState() => _CountDownPageState();
+  State<CountDownD2Q2> createState() => _CountDownD2Q2State();
 }
 
-class _CountDownPageState extends State<CountDownPage> {
+class _CountDownD2Q2State extends State<CountDownD2Q2> {
   bool isShowBtn = false;
   String? _statusMessage;
 
@@ -89,22 +90,21 @@ class _CountDownPageState extends State<CountDownPage> {
       final timeProvider = Provider.of<TimeProvider>(context, listen: false);
 
       timeProvider.onTimerFinish = () {
-        
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => CountDownPage(
+            builder: (context) => CountDownD2Q2(
               autoCountDown: true,
               nameQuest:
-                  'Buớc 1, bạn đến hầm giữ xe của toà nhà TML (link maps). Hãy lấy một phong bì trên xe máy 50-T1.065.23, ô đậu xe E19. Bạn có thời gian 2 giờ để thực hiện Quest 1.',
+                  'Bước 2, trong 1 phút sắp tới, camera trong văn phòng sẽ ngừng hoạt động trong suốt 1 giờ tiếp theo. Bạn phải tìm bộ hồ sơ có mã số GN2024 trong tủ hồ sơ kế toán, làm một bản copy.',
               showNextBtn: true,
-              titleQuest: 'QUEST 1',
+              titleQuest: 'QUEST 2',
               nameBtn: 'Next',
             ),
           ),
         );
 
-        timeProvider.setTime(2 * 3600);
+        timeProvider.setTime(3600);
         timeProvider.startTimer();
       };
 
@@ -196,12 +196,12 @@ class _CountDownPageState extends State<CountDownPage> {
                       Navigator.push(
                           context,
                           PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => Deal1Q1_2(
+                            pageBuilder: (_, __, ___) => D2Q2Photo(
                               autoCountDown: true,
                               nameQuest:
-                                  'Buớc 2, mang phong bì đến hẻm 51 trên đường Hồng Bàng, Quận 5 (link maps) giao cho người tiếp nhận. Bạn có 30 phút để thực hiện Quest 1',
+                                  'Bước 3, mang hồ sơ vừa copy, bỏ vào thùng rác con chim cánh cụt có dấu X tại công viên Sen Hồng. Bạn có 30 phút để thực hiện Quest này.',
                               showNextBtn: true,
-                              titleQuest: 'DEAL 1',
+                              titleQuest: 'QUEST 2',
                               nameBtn: 'HOÀN THÀNH',
                             ),
                           ));

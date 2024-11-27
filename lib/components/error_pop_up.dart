@@ -1,14 +1,14 @@
 import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class GlobalPopup {
-  static final GlobalPopup _instance = GlobalPopup._internal();
+class ErrorPopUp {
+  static final ErrorPopUp _instance = ErrorPopUp._internal();
 
-  factory GlobalPopup() {
+  factory ErrorPopUp() {
     return _instance;
   }
 
-  GlobalPopup._internal();
+  ErrorPopUp._internal();
 
   OverlayEntry? _overlayEntry;
 
@@ -36,7 +36,7 @@ class GlobalPopup {
                 width: double.infinity,
                 margin: const EdgeInsets.symmetric(horizontal: 25),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 decoration: BoxDecoration(
                   color: AppColors.whiteColor,
                   borderRadius: BorderRadius.circular(12),
@@ -57,34 +57,18 @@ class GlobalPopup {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              hide();
-                            },
-                            child: const Text('Từ chối',
-                                style: TextStyle(
-                                  color: AppColors.blackColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                )),
-                          ),
-                          TextButton(
-                            onPressed: onPressed,
-                            child: const Text('Đồng ý',
-                                style: TextStyle(
-                                  color: AppColors.blackColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                )),
-                          ),
-                        ],
+                    Container(
+                      child:  TextButton(
+                        onPressed: onPressed,
+                        child: const Text('Cancel',
+                            style: TextStyle(
+                              color: AppColors.blackColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            )),
                       ),
                     ),
+
                   ],
                 ),
               ),

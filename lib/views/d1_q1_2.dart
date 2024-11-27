@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:dealz_app/components/success_deal.dart';
 import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:dealz_app/utils/time_util.dart';
+import 'package:dealz_app/views/success_after_photo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -257,7 +258,7 @@ class _CountDownPageState extends State<Deal1Q1_2> {
         _image = File(pickedFile.path);
       });
 
-      Get.to(() => SuccessDeal(titleSuccess: 'Hoàn thành'));
+      Get.to(() => SuccessAfterPhoto(titleSuccess: 'Hoàn thành'));
     }
   }
 }
