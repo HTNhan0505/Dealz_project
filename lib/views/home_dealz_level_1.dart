@@ -1,5 +1,6 @@
 import 'package:dealz_app/components/error_pop_up.dart';
 import 'package:dealz_app/components/success_deal_3.dart';
+import 'package:dealz_app/components/success_deal_4.dart';
 import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:dealz_app/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
@@ -125,7 +126,7 @@ class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
                               context,
                               PageRouteBuilder(
                                 pageBuilder: (_, __, ___) =>
-                                    SuccessDeal3(titleSuccess: ''),
+                                    SuccessDeal4(titleSuccess: ''),
                               ));
                         });
                       } else {

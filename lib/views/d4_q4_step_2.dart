@@ -1,16 +1,16 @@
-import 'package:dealz_app/views/d4_q4_step_2.dart';
+import 'package:dealz_app/views/d4_q4_step_3.dart';
 import 'package:flutter/material.dart';
 
 import '../resources/colors/app_colors.dart';
 
-class D4Q4Screen extends StatefulWidget {
-  const D4Q4Screen({super.key});
+class D4Q4Step2 extends StatefulWidget {
+  const D4Q4Step2({super.key});
 
   @override
-  State<D4Q4Screen> createState() => _D4Q4ScreenState();
+  State<D4Q4Step2> createState() => _D4Q4Step2State();
 }
 
-class _D4Q4ScreenState extends State<D4Q4Screen> {
+class _D4Q4Step2State extends State<D4Q4Step2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,7 @@ class _D4Q4ScreenState extends State<D4Q4Screen> {
                   const Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Text(
-                      'Bước 1, tăng ca ở lại văn phòng SM GROUPS cho đến khi không còn nhân viên nào khác.',
+                      'Bước 2, trong 1 phút sắp tới, camera trong văn phòng sẽ ngừng hoạt động trong suốt 1 giờ tiếp theo. Bạn phải đến tủ hồ sơ phía sau bàn của bộ phận thẩm định, tìm một bộ hồ sơ thẩm định có mã SM1272024.',
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -50,7 +50,13 @@ class _D4Q4ScreenState extends State<D4Q4Screen> {
                           Navigator.push(
                               context,
                               PageRouteBuilder(
-                                pageBuilder: (_, __, ___) => D4Q4Step2(),
+                                pageBuilder: (_, __, ___) => D4Q4Step3(
+                                    autoCountDown: true,
+                                    nameQuest:
+                                        'Buớc 3, bạn phải sửa đổi con số thẩm định tài sản trong hồ sơ này từ 12 tỷ lên 20 tỷ đồng và trả về vị trí cũ. Đồng thời, gửi file mềm đã chỉnh sửa qua link sau <link>. Bạn có 12 tiếng để hoàn thành Quest 4.',
+                                    showNextBtn: true,
+                                    titleQuest: 'QUEST 4',
+                                    nameBtn: 'NEXT'),
                               ));
                         },
                         child: Container(

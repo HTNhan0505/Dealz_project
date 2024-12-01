@@ -1,16 +1,16 @@
-import 'dart:io';
 import 'dart:math';
 import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:dealz_app/utils/time_util.dart';
+import 'package:dealz_app/views/success_congratulate_dealz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import '../components/error_pop_up.dart';
+import '../components/global_pop_up.dart';
 import '../components/notification_global.dart';
 import '../provider/time_provider.dart';
-import '../views/success_congratulate_dealz.dart';
 
-class SuccessQ3Map extends StatefulWidget {
+class D4Q4Step4 extends StatefulWidget {
   final bool autoCountDown;
   final bool showNextBtn;
   final String nameQuest;
@@ -18,7 +18,7 @@ class SuccessQ3Map extends StatefulWidget {
   final String nameBtn;
   final VoidCallback? funcBtn;
 
-  const SuccessQ3Map(
+  const D4Q4Step4(
       {super.key,
       required this.autoCountDown,
       required this.nameQuest,
@@ -28,13 +28,12 @@ class SuccessQ3Map extends StatefulWidget {
       this.funcBtn});
 
   @override
-  State<SuccessQ3Map> createState() => _SuccessQ3MapState();
+  State<D4Q4Step4> createState() => _D4Q4Step4State();
 }
 
-class _SuccessQ3MapState extends State<SuccessQ3Map> {
+class _D4Q4Step4State extends State<D4Q4Step4> {
   bool isShowBtn = false;
   String? _statusMessage;
-  File? _image;
 
   void _scheduleNotification() async {
     try {
@@ -89,7 +88,16 @@ class _SuccessQ3MapState extends State<SuccessQ3Map> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final timeProvider = Provider.of<TimeProvider>(context, listen: false);
 
-      timeProvider.setTime(6 * 3600);
+      timeProvider.setTime(900);
+
+      timeProvider.onTimerFinish = () {
+        Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (_, __, ___) =>
+                  SuccessCongratulateDealz(titleSuccess: 'HOÀN THÀNH'),
+            ));
+      };
 
       if (widget.autoCountDown) {
         timeProvider.startTimer();
@@ -106,21 +114,24 @@ class _SuccessQ3MapState extends State<SuccessQ3Map> {
         : 0;
 
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: AppColors.blackColor,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.whiteColor,
+        backgroundColor: AppColors.blackColor,
         title: GestureDetector(
             onTap: () {
               setState(() {
                 isShowBtn = !isShowBtn;
               });
             },
-            child: Text(widget.titleQuest)),
+            child: Text(
+              widget.titleQuest,
+              style: TextStyle(color: AppColors.whiteColor),
+            )),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -132,7 +143,7 @@ class _SuccessQ3MapState extends State<SuccessQ3Map> {
               widget.nameQuest,
               style: const TextStyle(
                   fontSize: 16,
-                  color: AppColors.blackColor,
+                  color: AppColors.whiteColor,
                   fontWeight: FontWeight.w500),
               textAlign: TextAlign.center,
             ),
@@ -148,7 +159,7 @@ class _SuccessQ3MapState extends State<SuccessQ3Map> {
                   height: 220,
                   child: CircularProgressIndicator(
                     backgroundColor: Colors.transparent,
-                    color: Colors.black,
+                    color: AppColors.whiteColor,
                     strokeWidth: 5,
                     value: progress,
                   ),
@@ -157,8 +168,10 @@ class _SuccessQ3MapState extends State<SuccessQ3Map> {
                   onTap: () => _showTimePicker(context, timeProvider),
                   child: Text(
                     TimeUtil.instance.formatTime(timeProvider.remainingTime),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 45),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 45,
+                        color: AppColors.whiteColor),
                   ),
                 ),
               ],
@@ -169,25 +182,26 @@ class _SuccessQ3MapState extends State<SuccessQ3Map> {
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Text(
                   _statusMessage!,
-                  style: const TextStyle(fontSize: 16, color: Colors.black87),
+                  style: const TextStyle(
+                      fontSize: 16, color: AppColors.whiteColor),
                   textAlign: TextAlign.center,
                 ),
               ),
             widget.showNextBtn
                 ? GestureDetector(
-                    onTap: _pickImage,
+                    onTap: () {},
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 15, horizontal: 30),
                       decoration: BoxDecoration(
-                        color: Colors.black, // Màu nền của nút
+                        color: AppColors.whiteColor, // Màu nền của nút
                         borderRadius: BorderRadius.circular(30), // Bo góc
                       ),
                       child: Center(
                         child: Text(
                           widget.nameBtn,
                           style: const TextStyle(
-                            color: Colors.white, // Màu chữ
+                            color: Colors.black, // Màu chữ
                             fontSize: 16, // Kích thước chữ
                             fontWeight: FontWeight.bold, // In đậm chữ
                           ),
@@ -245,31 +259,13 @@ class _SuccessQ3MapState extends State<SuccessQ3Map> {
       ),
     );
   }
-
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => SuccessCongratulateDealz(
-                  titleSuccess:
-                      'Chúc mừng bạn đã hoàn thành Quest 3, hãy chọn deal tiếp theo của bạn')));
-    }
-  }
 }
 
 class DashedCirclePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = AppColors.blackColor
+      ..color = AppColors.whiteColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3;
 

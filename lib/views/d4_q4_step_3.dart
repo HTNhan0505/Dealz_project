@@ -1,16 +1,16 @@
-import 'dart:io';
 import 'dart:math';
 import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:dealz_app/utils/time_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import '../components/error_pop_up.dart';
+import '../components/global_pop_up.dart';
 import '../components/notification_global.dart';
 import '../provider/time_provider.dart';
-import '../views/success_congratulate_dealz.dart';
+import 'd4_q4_step_4.dart';
 
-class SuccessQ3Map extends StatefulWidget {
+class D4Q4Step3 extends StatefulWidget {
   final bool autoCountDown;
   final bool showNextBtn;
   final String nameQuest;
@@ -18,7 +18,7 @@ class SuccessQ3Map extends StatefulWidget {
   final String nameBtn;
   final VoidCallback? funcBtn;
 
-  const SuccessQ3Map(
+  const D4Q4Step3(
       {super.key,
       required this.autoCountDown,
       required this.nameQuest,
@@ -28,13 +28,12 @@ class SuccessQ3Map extends StatefulWidget {
       this.funcBtn});
 
   @override
-  State<SuccessQ3Map> createState() => _SuccessQ3MapState();
+  State<D4Q4Step3> createState() => _D4Q4Step3State();
 }
 
-class _SuccessQ3MapState extends State<SuccessQ3Map> {
+class _D4Q4Step3State extends State<D4Q4Step3> {
   bool isShowBtn = false;
   String? _statusMessage;
-  File? _image;
 
   void _scheduleNotification() async {
     try {
@@ -89,7 +88,29 @@ class _SuccessQ3MapState extends State<SuccessQ3Map> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final timeProvider = Provider.of<TimeProvider>(context, listen: false);
 
-      timeProvider.setTime(6 * 3600);
+      timeProvider.setTime(12 * 3600);
+
+      timeProvider.onTimerFinish = () {
+        ErrorPopUp()
+            .show(context, 'LỖI', 'Bạn đã hết thời gian thực hiện Quest 4', () {
+          ErrorPopUp().hide();
+          GlobalPopup().show(context, 'GIA HẠN',
+              'Bạn muốn gia hạn thời gian thực hiện Quest 4?', () {
+            GlobalPopup().hide();
+            Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => D4Q4Step4(
+                      autoCountDown: true,
+                      nameQuest:
+                          'Buớc 3, bạn phải sửa đổi con số thẩm định tài sản trong hồ sơ này từ 12 tỷ lên 20 tỷ đồng và trả về vị trí cũ. Đồng thời, gửi file mềm đã chỉnh sửa qua link sau <link>. Bạn được gia hạn 15 phút để hoàn thành Quest 4',
+                      showNextBtn: true,
+                      titleQuest: 'QUEST 4',
+                      nameBtn: 'HOÀN THÀNH'),
+                ));
+          });
+        });
+      };
 
       if (widget.autoCountDown) {
         timeProvider.startTimer();
@@ -175,7 +196,7 @@ class _SuccessQ3MapState extends State<SuccessQ3Map> {
               ),
             widget.showNextBtn
                 ? GestureDetector(
-                    onTap: _pickImage,
+                    onTap: () {},
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 15, horizontal: 30),
@@ -244,24 +265,6 @@ class _SuccessQ3MapState extends State<SuccessQ3Map> {
         ),
       ),
     );
-  }
-
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => SuccessCongratulateDealz(
-                  titleSuccess:
-                      'Chúc mừng bạn đã hoàn thành Quest 3, hãy chọn deal tiếp theo của bạn')));
-    }
   }
 }
 
