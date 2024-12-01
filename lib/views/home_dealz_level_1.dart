@@ -1,4 +1,5 @@
 import 'package:dealz_app/components/error_pop_up.dart';
+import 'package:dealz_app/components/success_deal_3.dart';
 import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:dealz_app/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
@@ -102,6 +103,30 @@ class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
                             Navigator.pushNamed(
                                 context, RouteNames.successDeal2Screen);
                           });
+                        });
+                      } else if (index == 1) {
+                        GlobalPopup().show(context, 'Deal 3 ',
+                            'Đổi voucher 200 triệu - Xác nhận chọn Dealz ? ',
+                            () {
+                          GlobalPopup().hide();
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (_, __, ___) =>
+                                    SuccessDeal3(titleSuccess: ''),
+                              ));
+                        });
+                      } else if (index == 2) {
+                        GlobalPopup().show(context, 'Deal 4 ',
+                            'Đổi voucher 1 tỷ đồng - Xác nhận chọn Dealz ?',
+                            () {
+                          GlobalPopup().hide();
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (_, __, ___) =>
+                                    SuccessDeal3(titleSuccess: ''),
+                              ));
                         });
                       } else {
                         ErrorPopUp().show(context, 'LỖI',

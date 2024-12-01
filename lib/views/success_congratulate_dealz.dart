@@ -19,7 +19,7 @@ class _SuccessCongratulateDealzState extends State<SuccessCongratulateDealz> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(milliseconds: 3500), () {
+    Future.delayed(const Duration(milliseconds: 4500), () {
       Navigator.pushNamed(context, RouteNames.homeDealzLevel1);
     });
   }

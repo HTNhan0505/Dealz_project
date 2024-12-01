@@ -1,4 +1,6 @@
 import 'package:dealz_app/provider/time_provider.dart';
+import 'package:dealz_app/utils/location_util.dart';
+import 'package:dealz_app/viewModel/location_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -18,8 +20,22 @@ void main() async {
   FlutterNativeSplash.remove();
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final LocationController locationController =
+      Get.put<LocationController>(LocationController());
+
+  @override
+  void initState() {
+    LocationService.instance.getUserLocation(controller: locationController);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

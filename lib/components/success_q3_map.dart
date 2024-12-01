@@ -1,17 +1,25 @@
+import 'dart:io';
 import 'dart:math';
+
+import 'package:dealz_app/components/count_down_success_q2.dart';
+import 'package:dealz_app/components/success_deal.dart';
 import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:dealz_app/utils/time_util.dart';
-import 'package:dealz_app/views/d1_q1_2.dart';
-import 'package:dealz_app/views/d2_q2_photo.dart';
+import 'package:dealz_app/views/success_after_photo.dart';
+import 'package:dealz_app/views/success_after_photo_q2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../components/count_down_page.dart';
+import '../components/notification_global.dart';
 import '../provider/time_provider.dart';
+import '../utils/routes/routes_names.dart';
+import '../views/success_congratulate_dealz.dart';
 
-import 'notification_global.dart';
-
-class CountDownD2Q2 extends StatefulWidget {
+class SuccessQ3Map extends StatefulWidget {
   final bool autoCountDown;
   final bool showNextBtn;
   final String nameQuest;
@@ -19,7 +27,7 @@ class CountDownD2Q2 extends StatefulWidget {
   final String nameBtn;
   final VoidCallback? funcBtn;
 
-  CountDownD2Q2(
+  const SuccessQ3Map(
       {super.key,
       required this.autoCountDown,
       required this.nameQuest,
@@ -29,12 +37,13 @@ class CountDownD2Q2 extends StatefulWidget {
       this.funcBtn});
 
   @override
-  State<CountDownD2Q2> createState() => _CountDownD2Q2State();
+  State<SuccessQ3Map> createState() => _SuccessQ3MapState();
 }
 
-class _CountDownD2Q2State extends State<CountDownD2Q2> {
+class _SuccessQ3MapState extends State<SuccessQ3Map> {
   bool isShowBtn = false;
   String? _statusMessage;
+  File? _image;
 
   void _scheduleNotification() async {
     try {
@@ -89,24 +98,7 @@ class _CountDownD2Q2State extends State<CountDownD2Q2> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final timeProvider = Provider.of<TimeProvider>(context, listen: false);
 
-      timeProvider.setTime(60);
-
-      timeProvider.onTimerFinish = () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CountDownD2Q2(
-              autoCountDown: true,
-              nameQuest:
-                  'Bước 2, trong 1 phút sắp tới, camera trong văn phòng sẽ ngừng hoạt động trong suốt 1 giờ tiếp theo. Bạn phải tìm bộ hồ sơ có mã số GN2024 trong tủ hồ sơ kế toán, làm một bản copy.',
-              showNextBtn: true,
-              titleQuest: 'QUEST 2',
-              nameBtn: 'Next',
-            ),
-          ),
-        );
-        timeProvider.startTimer();
-      };
+      timeProvider.setTime(6 * 3600);
 
       if (widget.autoCountDown) {
         timeProvider.startTimer();
@@ -192,20 +184,7 @@ class _CountDownD2Q2State extends State<CountDownD2Q2> {
               ),
             widget.showNextBtn
                 ? GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => D2Q2Photo(
-                              autoCountDown: true,
-                              nameQuest:
-                                  'Bước 3, mang hồ sơ vừa copy, bỏ vào thùng rác con chim cánh cụt có dấu X tại công viên Sen Hồng. Bạn có 30 phút để thực hiện Quest này.',
-                              showNextBtn: true,
-                              titleQuest: 'QUEST 2',
-                              nameBtn: 'HOÀN THÀNH',
-                            ),
-                          ));
-                    },
+                    onTap: _pickImage,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 15, horizontal: 30),
@@ -274,6 +253,24 @@ class _CountDownD2Q2State extends State<CountDownD2Q2> {
         ),
       ),
     );
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SuccessCongratulateDealz(
+                  titleSuccess:
+                      'Chúc mừng bạn đã hoàn thành Quest 3, hãy chọn deal tiếp theo của bạn')));
+    }
   }
 }
 

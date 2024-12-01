@@ -1,16 +1,16 @@
-
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
+import 'package:get/route_manager.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart' as handler;
 
-import '../viewModel/home_view_model.dart';
+import '../viewModel/location_view_model.dart';
 
-class LocationUtil {
-  LocationUtil.init();
-  static LocationUtil instance = LocationUtil.init();
+class LocationService {
+  LocationService.init();
+
+  static LocationService instance = LocationService.init();
 
   final Location _location = Location();
+
   Future<bool> checkForServiceAvailability() async {
     bool isEnabled = await _location.serviceEnabled();
     if (isEnabled) {
@@ -40,26 +40,23 @@ class LocationUtil {
       Get.snackbar("Permission Needed",
           "We use permission to get your location in order to give your service",
           onTap: (snack) async {
-            await handler.openAppSettings();
-          }).show();
+        await handler.openAppSettings();
+      }).show();
       return false;
     }
 
     return Future.value(true);
   }
 
-  Future<void> getUserLocation({required HomeViewModel controller}) async {
+  Future<void> getUserLocation({required LocationController controller}) async {
     controller.updateIsAccessingLocation(true);
     if (!(await checkForServiceAvailability())) {
-      debugPrint('Service -------');
       controller.errorDescription.value = "Service not enabled";
       controller.updateIsAccessingLocation(false);
 
       return;
     }
     if (!(await checkForPermission())) {
-      debugPrint('Permision -------');
-
       controller.errorDescription.value = "Permission not given";
       controller.updateIsAccessingLocation(false);
       return;

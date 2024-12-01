@@ -47,6 +47,9 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   timezone: ^0.10.0
   image_picker: ^1.1.2
+  google_maps_flutter: ^2.10.0
+  geolocator: ^13.0.2
+  custom_info_window: ^1.0.1
 
 
 

@@ -244,7 +244,7 @@ class _CountDownSuccessQ2State extends State<CountDownSuccessQ2> {
                                 ),
                               ),
                             ),
-                            const Spacer(),
+                            const Spacer(), 
                             GestureDetector(
                               onTap: () {
                                 Get.to(() => SuccessCongratulateDealz(
