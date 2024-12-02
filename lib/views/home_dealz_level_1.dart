@@ -3,12 +3,14 @@ import 'package:dealz_app/components/success_deal_3.dart';
 import 'package:dealz_app/components/success_deal_4.dart';
 import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:dealz_app/utils/routes/routes_names.dart';
+import 'package:dealz_app/views/settings/notify_manager.dart';
 import 'package:flutter/material.dart';
 
 import '../components/account_bank_pop_up.dart';
 import '../components/count_down_d2_q2.dart';
 import '../components/count_down_page.dart';
 import '../components/global_pop_up.dart';
+import '../components/success_deal_5.dart';
 
 class HomeDealzLevel1Screen extends StatefulWidget {
   const HomeDealzLevel1Screen({super.key});
@@ -18,6 +20,9 @@ class HomeDealzLevel1Screen extends StatefulWidget {
 }
 
 class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
+  bool isShowLv3 = false;
+  bool isShowSetting = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,13 +33,21 @@ class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+
             const SizedBox(height: 120),
-            const Text(
-              'LEVEL 1',
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.blackColor),
+            GestureDetector(
+              onDoubleTap: () {
+                setState(() {
+                  isShowSetting = !isShowSetting;
+                });
+              },
+              child: const Text(
+                'LEVEL 1',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.blackColor),
+              ),
             ),
             const SizedBox(height: 40),
             Center(
@@ -64,12 +77,19 @@ class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
               ),
             ),
             const SizedBox(height: 60),
-            const Text(
-              'LEVEL 2',
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.blackColor),
+            GestureDetector(
+              onDoubleTap: () {
+                setState(() {
+                  isShowLv3 = !isShowLv3;
+                });
+              },
+              child: const Text(
+                'LEVEL 2',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.blackColor),
+              ),
             ),
             const SizedBox(height: 40),
             Center(
@@ -129,6 +149,18 @@ class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
                                     SuccessDeal4(titleSuccess: ''),
                               ));
                         });
+                      } else if (index == 3) {
+                        GlobalPopup().show(context, 'Deal 5 ',
+                            'Đổi voucher 2 tỷ đồng - Xác nhận chọn Dealz ?',
+                            () {
+                          GlobalPopup().hide();
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (_, __, ___) =>
+                                    SuccessDeal5(titleSuccess: ''),
+                              ));
+                        });
                       } else {
                         ErrorPopUp().show(context, 'LỖI',
                             'Hoàn thành Quest 2 để được săn voucher tiếp theo.',
@@ -152,38 +184,52 @@ class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
               ),
             ),
             const SizedBox(height: 60),
-            const Text(
-              'LEVEL 3',
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.blackColor),
-            ),
+            if (isShowLv3)
+              const Text(
+                'LEVEL 3',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.blackColor),
+              ),
             const SizedBox(height: 40),
-            Center(
-              child: InkWell(
-                onTap: () {
-                  ErrorPopUp().show(context, 'LỖI',
-                      'Level 3 sẽ được mở khoá khi tổng voucher bạn săn đạt được 2 tỷ đồng.',
-                      () {
-                    GlobalPopup().hide();
-                    AccountBankPopUp().show(context, () {
-                      AccountBankPopUp().hide();
-                      Navigator.pushNamed(
-                          context, RouteNames.successDeal2Screen);
-                    });
-                  });
-                },
-                child: ClipOval(
-                  child: Image.asset(
-                    'lib/resources/splash_screen.png',
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
+            if (isShowLv3)
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    
+                  },
+                  child: ClipOval(
+                    child: Image.asset(
+                      'lib/resources/splash_screen.png',
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-            ),
+
+
+            SizedBox(height: 30),
+
+            if(isShowSetting) InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => NotificationManager(),
+                    ));
+              },
+              child: ClipOval(
+                child: Image.asset(
+                  'lib/resources/setting_ic.png',
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            )
           ],
         ),
       ),

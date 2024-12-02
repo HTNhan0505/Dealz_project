@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import 'components/notification_global.dart';
@@ -13,6 +14,12 @@ import 'utils/routes/routes_names.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final notificationPermission = await Permission.notification.status;
+  if (notificationPermission.isDenied) {
+    await Permission.notification.request();
+  }
+
+
   await NotificationService().init();
   FlutterNativeSplash.preserve(
       widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
