@@ -1,4 +1,5 @@
 class RouteNames {
+  static const String welcomeScreen = "welcome_screen";
   static const String homeDealz1 = "home_dealz_1";
   static const String homeDealz2 = "home_dealz_2";
   static const String homeDealzLevel1 = "home_dealz_lv_1";
