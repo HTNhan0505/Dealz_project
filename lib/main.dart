@@ -1,4 +1,5 @@
 import 'package:dealz_app/provider/time_provider.dart';
+import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:dealz_app/utils/location_util.dart';
 import 'package:dealz_app/viewModel/location_view_model.dart';
 import 'package:dealz_app/views/home_binding.dart';
@@ -56,9 +57,11 @@ class _MyAppState extends State<MyApp> {
       child: GetMaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: AppColors.appBackground,
+
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteNames.homeDealz1,
+        initialRoute: RouteNames.welcomeScreen,
         onGenerateRoute: Routes.generateRoutes,
         initialBinding: HomeBinding(),
         builder: EasyLoading.init(),

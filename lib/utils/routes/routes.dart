@@ -5,6 +5,7 @@ import 'package:dealz_app/utils/routes/routes_names.dart';
 import 'package:dealz_app/views/home_dealz_2.dart';
 import 'package:dealz_app/views/home_dealz_level_1.dart';
 import 'package:dealz_app/views/home_dealz_pop_up.dart';
+import 'package:dealz_app/views/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/bank_form_pop_up.dart';
@@ -13,6 +14,9 @@ import '../../views/home_dealz_1.dart';
 class Routes {
   static Route<dynamic> generateRoutes(RouteSettings settings) {
     switch (settings.name) {
+      case (RouteNames.welcomeScreen):
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const WelcomeScreen());
       case (RouteNames.homeDealz1):
         return MaterialPageRoute(
             builder: (BuildContext context) => const HomeDeal1Screen());

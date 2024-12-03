@@ -52,8 +52,6 @@ dependencies:
   crypto: ^3.0.6
   audioplayers: ^6.1.0
 
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -81,7 +79,8 @@ flutter:
   assets:
     - lib/resources/
     - assets/mp3_flutter.mp3
-  #   - images/a_dot_ham.jpeg
+    - assets/gif/welcome_motion.gif
+  # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
