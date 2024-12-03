@@ -2,7 +2,9 @@ import 'package:dealz_app/provider/time_provider.dart';
 import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:dealz_app/utils/location_util.dart';
 import 'package:dealz_app/viewModel/location_view_model.dart';
+import 'package:dealz_app/views/home_binding.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -20,11 +22,14 @@ void main() async {
     await Permission.notification.request();
   }
 
-
   await NotificationService().init();
   FlutterNativeSplash.preserve(
       widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
-  runApp(const MyApp());
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(MyApp());
+  });
   FlutterNativeSplash.remove();
 }
 
@@ -58,6 +63,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         initialRoute: RouteNames.welcomeScreen,
         onGenerateRoute: Routes.generateRoutes,
+        initialBinding: HomeBinding(),
         builder: EasyLoading.init(),
       ),
     );

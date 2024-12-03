@@ -15,7 +15,6 @@ class _D2Q2ScreenState extends State<D2Q2Screen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

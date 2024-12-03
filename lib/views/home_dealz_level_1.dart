@@ -3,14 +3,18 @@ import 'package:dealz_app/components/success_deal_3.dart';
 import 'package:dealz_app/components/success_deal_4.dart';
 import 'package:dealz_app/resources/colors/app_colors.dart';
 import 'package:dealz_app/utils/routes/routes_names.dart';
+import 'package:dealz_app/views/d5_q5_voice_text.dart';
 import 'package:dealz_app/views/settings/notify_manager.dart';
+import 'package:dealz_app/views/settings/screen_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../components/account_bank_pop_up.dart';
 import '../components/count_down_d2_q2.dart';
 import '../components/count_down_page.dart';
 import '../components/global_pop_up.dart';
 import '../components/success_deal_5.dart';
+import '../viewModel/home_view_model.dart';
 
 class HomeDealzLevel1Screen extends StatefulWidget {
   const HomeDealzLevel1Screen({super.key});
@@ -20,7 +24,7 @@ class HomeDealzLevel1Screen extends StatefulWidget {
 }
 
 class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
-  bool isShowLv3 = false;
+  final homeViewModel = Get.find<HomeViewModel>();
   bool isShowSetting = false;
 
   @override
@@ -33,7 +37,6 @@ class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
             const SizedBox(height: 120),
             GestureDetector(
               onDoubleTap: () {
@@ -79,8 +82,9 @@ class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
             const SizedBox(height: 60),
             GestureDetector(
               onDoubleTap: () {
+                homeViewModel.isShowLv3.value = !homeViewModel.isShowLv3.value;
                 setState(() {
-                  isShowLv3 = !isShowLv3;
+
                 });
               },
               child: const Text(
@@ -184,7 +188,7 @@ class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
               ),
             ),
             const SizedBox(height: 60),
-            if (isShowLv3)
+            if (homeViewModel.isShowLv3.value)
               const Text(
                 'LEVEL 3',
                 style: TextStyle(
@@ -193,11 +197,15 @@ class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
                     color: AppColors.blackColor),
               ),
             const SizedBox(height: 40),
-            if (isShowLv3)
+            if (homeViewModel.isShowLv3.value)
               Center(
                 child: InkWell(
                   onTap: () {
-                    
+                    Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => D5Q5VoiceText(),
+                        ));
                   },
                   child: ClipOval(
                     child: Image.asset(
@@ -213,23 +221,51 @@ class _HomeDealzLevel1ScreenState extends State<HomeDealzLevel1Screen> {
 
             SizedBox(height: 30),
 
-            if(isShowSetting) InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => NotificationManager(),
-                    ));
-              },
-              child: ClipOval(
-                child: Image.asset(
-                  'lib/resources/setting_ic.png',
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                ),
+            if(isShowSetting)  Center(
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 50.0,
+                runSpacing: 20.0,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => NotificationManager(),
+                          ));
+                    },
+                    child: ClipOval(
+                      child: Image.asset(
+                        'lib/resources/notify_ic.png',
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => ScreenManager(),
+                          ));
+                    },
+                    child: ClipOval(
+                      child: Image.asset(
+                        'lib/resources/setting_ic.png',
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             )
+
+
           ],
         ),
       ),

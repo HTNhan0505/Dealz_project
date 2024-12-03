@@ -1,10 +1,12 @@
 import 'package:dealz_app/resources/colors/app_colors.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../components/text_fields.dart';
 import '../viewModel/home_view_model.dart';
+import 'home_deakz_1_step_2.dart';
 
 class HomeDeal1Screen extends StatefulWidget {
   const HomeDeal1Screen({super.key});
@@ -24,11 +26,85 @@ class _HomeDeal1ScreenState extends State<HomeDeal1Screen> {
 
   bool? isAgree = false;
 
+
+
   final HomeViewModel homeViewModel = Get.put<HomeViewModel>(HomeViewModel());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return !homeViewModel.isShowPermissionLocate.value ?  GestureDetector(
+      onTap: () {
+        homeViewModel.isShowPermissionLocate.value = true;
+        setState(() {
+
+        });
+      },
+      child: Material(
+        color: AppColors.blackColor.withOpacity(0.5),
+        child: Center(
+          child: Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 25),
+            padding:
+            const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColors.whiteColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'định vị',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Cho phép “DEALZ” định vị vị trí của bạn',
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w400),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+
+                        },
+                        child: const Text('Từ chối',
+                            style: TextStyle(
+                              color: AppColors.blackColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            )),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          homeViewModel.isShowPermissionLocate.value = true;
+                          setState(() {
+                          });
+                        },
+                        child: const Text('Đồng ý',
+                            style: TextStyle(
+                              color: AppColors.blackColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ) : Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
         centerTitle: true,
@@ -261,7 +337,12 @@ class _HomeDeal1ScreenState extends State<HomeDeal1Screen> {
         height: 60,
         child: FloatingActionButton.extended(
           onPressed: () {
-
+            Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => HomeDeakz1Step2(
+                  ),
+                ));
           },
           backgroundColor: AppColors.blackColor,
           label: const Text(
